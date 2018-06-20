@@ -12,8 +12,7 @@ html, body {
 }
 
 #container {
-  width: 400px;
-  height: 350px;
+  width: 600px;
   margin: 0 auto;
   padding-top: 30px;
   text-align: center;
@@ -38,9 +37,17 @@ input {
   cursor: pointer;
   margin: 0 auto;
   margin-top: 30px;
+  margin-bottom: 30px;
   border: 1px solid #c0c0c0;
   border-radius: 2px;
   background-color: #f7f7f7
+}
+
+.errorMessage {
+  color: red;
+  display: inline-block;
+  margin: 0 auto;
+  margin-top: 30px;
 }
 
 #url, #error {

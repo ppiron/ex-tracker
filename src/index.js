@@ -1,15 +1,30 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+import AddUser from './components/AddUser.jsx'
+import FormExercise from './components/FormExercise.jsx'
 
-function makeRequest(posted_url) {
-  const request = new Request('http://localhost:3000/api/new', {
+function makeRequest(endpoint, payload) {
+  
+  let body;
+  if (endpoint === 'new-user') {
+    body = {
+      'username': payload.newUser, 
+    }
+  } else {
+    body = {
+      'userID': payload.userID,
+      'exercise': payload.exercise,
+      'duration': payload.duration,
+      'date': payload.date,
+    }
+  }
+
+  const request = new Request('http://localhost:3000/api/' + endpoint, {
 	    method: 'POST', 
       headers: {
         "Content-type": "application/json"
       },
-      body: JSON.stringify({
-        posted_url: posted_url,
-      }),
+      body: JSON.stringify(body),
     })
   return fetch(request)
     .then( (response) => {
@@ -22,21 +37,24 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      isLoading: true,
-      text: '',
-      data: {},
+      text: {
+        newUser: '',
+        userID: '',
+        description: '',
+        duration: '',
+        date: '',
+      },
     };
 
     this.onChange = this.onChange.bind(this);
     this.onKeyPress = this.onKeyPress.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.navigate = this.navigate.bind(this);
   }
 
-  onChange(event) {
+  onChange(event, prop) {
     this.setState( 
         {
-          text: event.target.value,
+          text: {... this.state.text, [prop]: event.target.value}
         }
       )
   }
@@ -48,68 +66,24 @@ class App extends Component {
     }
   }
 
-  onSubmit(event) {
-    makeRequest(this.state.text).then( data => {
+  onSubmit(event, endpoint) {
+    makeRequest(endpoint, this.state.text).then( data => {
       // console.log(data);
         this.setState( 
           {
-            isLoading: false,
             data: data,
           }
         )
     })
   }
 
-  navigate(event) {
-    const url = this.state.data.original_url
-    const re = /^(https?:\/\/)?([^\/]+\.[^\.\/]+)(\/.+)?/;
-    const href = (url.match(re))[1] ? url : 'http://' + url;
-    location.href = href
-    event.preventDefault()
-  }
-
   render() {
-    
-    if (this.state.data.error) {
-      return (
-        <div>
-          <div id='container'>
-          <p>Insert URL to be shorten</p>
-          <input type="text" placeholder='https://www.example.com' value={this.state.text}
-          onChange={this.onChange} onKeyPress={this.onKeyPress}/>
-          <div className='button' onClick={this.onSubmit}>Submit</div>
-          <div id='error'>{this.state.data.error}</div>
-          </div>
-        </div>
-      )
-    } 
-
-    //console.log(this.state.data);
-    let href;
-    if (this.state.data.original_url) {
-      const url = this.state.data.original_url;
-      const re = /^(https?:\/\/)?([^\/]+\.[^\.\/]+)(\/.+)?/;
-      href = (url.match(re))[1] ? url : 'http://' + url;
-    }
-
-    return (
-      <div>
-        <div id='container'>
-          <p>Insert URL to be shorten</p>
-          <input type="text" placeholder='https://www.example.com' value={this.state.text} 
-          onChange={this.onChange} onKeyPress={this.onKeyPress}/>
-          <div className='button' onClick={this.onSubmit}>Submit</div>
-          <div id='url'>{!this.state.isLoading && `Original url: ${this.state.data.original_url}`}</div>
-          <div id='shorturl'>
-            {!this.state.isLoading && `Shortened url: `}
-            {!this.state.isLoading && 
-            <a href={!this.state.isLoading && href} onClick={this.navigate}>
-              {this.state.data.shortened_url}
-            </a>}
-          </div>
-        </div>
+    return (  
+      <div id='container'>
+        <AddUser onChange={this.onChange} text={this.state.text.newUser} onSubmit={this.onSubmit} />
+        <FormExercise />
       </div>
-    );
+    )
   }
 }
 
