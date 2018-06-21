@@ -9,7 +9,8 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use('/', express.static('./frontend'));
+app.use('/', express.static('./src'));
+app.use('/build', express.static('./build'));
 
 app.use(newRoute);
 app.use(addRoute);

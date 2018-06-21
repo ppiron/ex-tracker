@@ -261,6 +261,20 @@ process.umask = function () {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+if (process.env.NODE_ENV === 'production') {
+  module.exports = __webpack_require__(13);
+} else {
+  module.exports = __webpack_require__(14);
+}
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 
 
 /**
@@ -299,7 +313,7 @@ emptyFunction.thatReturnsArgument = function (arg) {
 module.exports = emptyFunction;
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -395,7 +409,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 };
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -455,7 +469,7 @@ module.exports = invariant;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -479,20 +493,6 @@ module.exports = emptyObject;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(13);
-} else {
-  module.exports = __webpack_require__(14);
-}
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -507,7 +507,7 @@ if (process.env.NODE_ENV === 'production') {
 
 
 
-var emptyFunction = __webpack_require__(1);
+var emptyFunction = __webpack_require__(2);
 
 /**
  * Similar to invariant but only logs a warning if the condition is not met.
@@ -857,7 +857,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(5);
+var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -867,7 +867,7 @@ var _AddUser = __webpack_require__(25);
 
 var _AddUser2 = _interopRequireDefault(_AddUser);
 
-var _FormExercise = __webpack_require__(27);
+var _FormExercise = __webpack_require__(26);
 
 var _FormExercise2 = _interopRequireDefault(_FormExercise);
 
@@ -897,7 +897,7 @@ function makeRequest(endpoint, payload) {
     };
   }
 
-  var request = new Request('http://localhost:3000/api/' + endpoint, {
+  var request = new Request('http://localhost:3300/api/exercise/' + endpoint, {
     method: 'POST',
     headers: {
       "Content-type": "application/json"
@@ -997,10 +997,10 @@ var App = function (_Component) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var k = __webpack_require__(2),
-    n = __webpack_require__(3),
-    p = __webpack_require__(4),
-    q = __webpack_require__(1),
+var k = __webpack_require__(3),
+    n = __webpack_require__(4),
+    p = __webpack_require__(5),
+    q = __webpack_require__(2),
     r = "function" === typeof Symbol && Symbol.for,
     t = r ? Symbol.for("react.element") : 60103,
     u = r ? Symbol.for("react.portal") : 60106,
@@ -1137,11 +1137,11 @@ if (process.env.NODE_ENV !== "production") {
   (function () {
     'use strict';
 
-    var _assign = __webpack_require__(2);
-    var invariant = __webpack_require__(3);
-    var emptyObject = __webpack_require__(4);
+    var _assign = __webpack_require__(3);
+    var invariant = __webpack_require__(4);
+    var emptyObject = __webpack_require__(5);
     var warning = __webpack_require__(6);
-    var emptyFunction = __webpack_require__(1);
+    var emptyFunction = __webpack_require__(2);
     var checkPropTypes = __webpack_require__(7);
 
     // TODO: this is special because it gets imported during build.
@@ -2685,15 +2685,15 @@ if (process.env.NODE_ENV === 'production') {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var aa = __webpack_require__(3),
-    ba = __webpack_require__(5),
+var aa = __webpack_require__(4),
+    ba = __webpack_require__(1),
     m = __webpack_require__(8),
-    p = __webpack_require__(2),
-    v = __webpack_require__(1),
+    p = __webpack_require__(3),
+    v = __webpack_require__(2),
     da = __webpack_require__(9),
     ea = __webpack_require__(10),
     fa = __webpack_require__(11),
-    ha = __webpack_require__(4);
+    ha = __webpack_require__(5);
 function A(a) {
   for (var b = arguments.length - 1, c = "https://reactjs.org/docs/error-decoder.html?invariant=" + a, d = 0; d < b; d++) {
     c += "&args[]=" + encodeURIComponent(arguments[d + 1]);
@@ -4827,7 +4827,7 @@ module.exports = isNode;
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
- */var _typeof=typeof Symbol==="function"&&typeof Symbol.iterator==="symbol"?function(obj){return typeof obj;}:function(obj){return obj&&typeof Symbol==="function"&&obj.constructor===Symbol&&obj!==Symbol.prototype?"symbol":typeof obj;};if(process.env.NODE_ENV!=="production"){(function(){'use strict';var invariant=__webpack_require__(3);var React=__webpack_require__(5);var warning=__webpack_require__(6);var ExecutionEnvironment=__webpack_require__(8);var _assign=__webpack_require__(2);var emptyFunction=__webpack_require__(1);var checkPropTypes=__webpack_require__(7);var getActiveElement=__webpack_require__(9);var shallowEqual=__webpack_require__(10);var containsNode=__webpack_require__(11);var emptyObject=__webpack_require__(4);var hyphenateStyleName=__webpack_require__(21);var camelizeStyleName=__webpack_require__(23);// Relying on the `invariant()` implementation lets us
+ */var _typeof=typeof Symbol==="function"&&typeof Symbol.iterator==="symbol"?function(obj){return typeof obj;}:function(obj){return obj&&typeof Symbol==="function"&&obj.constructor===Symbol&&obj!==Symbol.prototype?"symbol":typeof obj;};if(process.env.NODE_ENV!=="production"){(function(){'use strict';var invariant=__webpack_require__(4);var React=__webpack_require__(1);var warning=__webpack_require__(6);var ExecutionEnvironment=__webpack_require__(8);var _assign=__webpack_require__(3);var emptyFunction=__webpack_require__(2);var checkPropTypes=__webpack_require__(7);var getActiveElement=__webpack_require__(9);var shallowEqual=__webpack_require__(10);var containsNode=__webpack_require__(11);var emptyObject=__webpack_require__(5);var hyphenateStyleName=__webpack_require__(21);var camelizeStyleName=__webpack_require__(23);// Relying on the `invariant()` implementation lets us
 // have preserve the format and params in the www builds.
 !React?invariant(false,'ReactDOM was loaded before React. Make sure you load the React package before loading ReactDOM.'):void 0;var invokeGuardedCallback=function invokeGuardedCallback(name,func,context,a,b,c,d,e,f){this._hasCaughtError=false;this._caughtError=null;var funcArgs=Array.prototype.slice.call(arguments,3);try{func.apply(context,funcArgs);}catch(error){this._caughtError=error;this._hasCaughtError=true;}};{// In DEV mode, we swap out invokeGuardedCallback for a special version
 // that plays more nicely with the browser's DevTools. The idea is to preserve
@@ -8148,7 +8148,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _react = __webpack_require__(5);
+var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -8186,8 +8186,7 @@ var AddUser = function AddUser(props) {
 exports.default = AddUser;
 
 /***/ }),
-/* 26 */,
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8200,9 +8199,13 @@ exports.FormExercise = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(5);
+var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
+
+var _Input = __webpack_require__(27);
+
+var _Input2 = _interopRequireDefault(_Input);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -8262,44 +8265,51 @@ var FormExercise = exports.FormExercise = function (_Component) {
 
     _this.onChange = _this.onChange.bind(_this);
     _this.onSubmit = _this.onSubmit.bind(_this);
-    _this.click = _this.click.bind(_this);
+    _this.formIsValid = _this.formIsValid.bind(_this);
     return _this;
   }
 
   _createClass(FormExercise, [{
     key: 'onChange',
-    value: function onChange(event, prop) {
-      var _setState;
-
-      this.setState((_setState = {}, _defineProperty(_setState, prop, event.target.value), _defineProperty(_setState, 'submitted', false), _setState));
+    value: function onChange(event, name) {
+      this.setState(_defineProperty({}, name, event.target.value));
+    }
+  }, {
+    key: 'formIsValid',
+    value: function formIsValid() {
+      return this.userID && this.description && this.duration;
     }
   }, {
     key: 'onSubmit',
     value: function onSubmit(endpoint) {
-      makeRequest(endpoint, this.state).then(function (data) {
-        console.log(data);
-      });
-    }
-  }, {
-    key: 'click',
-    value: function click(event) {
-      if (this.state.userID && this.state.description && this.state.duration) {
-        return this.onSubmit('add');
-      }
+      var _this2 = this;
+
       this.setState({
         submitted: true
+      }, function () {
+        if (_this2.formIsValid()) {
+          makeRequest(endpoint, _this2.state).then(function (data) {
+            console.log(data);
+          });
+        }
       });
-
-      console.log(this.state.submitted);
     }
+
+    // click(event) {
+
+    // }
+
   }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
-      var styles = {
-        border: '1px solid red'
-      };
+      var inputs = [{ name: 'userID', isRequired: true, placeholder: 'userID*' }, { name: 'description', isRequired: true, placeholder: 'description*' }, { name: 'duration', isRequired: true, placeholder: 'duration* (mins.)' }, { name: 'date', isRequired: false, placeholder: 'date (yyyy-mm-dd)' }];
+
+      var inputFields = inputs.map(function (input) {
+        return _react2.default.createElement(_Input2.default, { key: input.name, name: input.name, placeholder: input.placeholder, submitted: _this3.state.submitted,
+          isRequired: input.isRequired, change: _this3.onChange, value: _this3.state[input.name] });
+      });
 
       return _react2.default.createElement(
         'div',
@@ -8311,30 +8321,10 @@ var FormExercise = exports.FormExercise = function (_Component) {
           null,
           'POST /api/exercise/add'
         ),
-        _react2.default.createElement('input', { style: this.state.submitted && !this.state.userID ? styles : {}, placeholder: 'userID*',
-          type: 'text', value: this.state.userID, onChange: function onChange(e) {
-            return _this2.onChange(e, 'userID');
-          } }),
-        _react2.default.createElement('input', { style: this.state.submitted && !this.state.description ? styles : {}, placeholder: 'description*',
-          type: 'text', value: this.state.description, onChange: function onChange(e) {
-            return _this2.onChange(e, 'description');
-          } }),
-        _react2.default.createElement('input', { style: this.state.submitted && !this.state.duration ? styles : {}, placeholder: 'duration* (mins.)',
-          type: 'text', value: this.state.duration, onChange: function onChange(e) {
-            return _this2.onChange(e, 'duration');
-          } }),
-        _react2.default.createElement('input', { type: 'text', value: this.state.date, placeholder: 'date (yyyy-mm-dd)',
-          onChange: function onChange(e) {
-            return _this2.onChange(e, 'date');
-          } }),
-        this.state.submitted && _react2.default.createElement(
-          'span',
-          { className: 'errorMessage' },
-          'Fields marked as * are required'
-        ),
+        inputFields,
         _react2.default.createElement(
           'div',
-          { className: 'button', onClick: this.click },
+          { className: 'button', onClick: this.onSubmit.bind(this, 'add') },
           'Submit'
         )
       );
@@ -8345,6 +8335,50 @@ var FormExercise = exports.FormExercise = function (_Component) {
 }(_react.Component);
 
 exports.default = FormExercise;
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Input = function Input(_ref) {
+  var name = _ref.name,
+      isRequired = _ref.isRequired,
+      placeholder = _ref.placeholder,
+      change = _ref.change,
+      value = _ref.value,
+      submitted = _ref.submitted;
+
+
+  var isValid = submitted ? isRequired ? value !== '' : true : true;
+
+  var styles = {
+    border: '1px solid red'
+  };
+
+  return _react2.default.createElement(
+    'div',
+    null,
+    _react2.default.createElement('input', { style: !isValid ? styles : {}, type: 'text', name: name, placeholder: placeholder,
+      onChange: function onChange(e) {
+        return change(e, name);
+      }, value: value })
+  );
+};
+
+exports.default = Input;
 
 /***/ })
 /******/ ]);

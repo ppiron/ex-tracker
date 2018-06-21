@@ -19,7 +19,7 @@ function makeRequest(endpoint, payload) {
     }
   }
 
-  const request = new Request('http://localhost:3000/api/' + endpoint, {
+  const request = new Request('http://localhost:3300/api/exercise/' + endpoint, {
 	    method: 'POST', 
       headers: {
         "Content-type": "application/json"

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Input from './Input.jsx'
 
 function makeRequest(endpoint, payload) {
   
@@ -43,58 +44,63 @@ export class FormExercise extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.click = this.click.bind(this);
+    this.formIsValid = this.formIsValid.bind(this);
   }
 
-  onChange(event, prop) {
+  onChange(event, name) {
     this.setState( 
         {
-          [prop]: event.target.value,
-          submitted: false,
+          [name]: event.target.value,
         }
       )
   }
 
-  onSubmit(endpoint) {
-    makeRequest(endpoint, this.state).then( data => {
-      console.log(data);
-    })
+  formIsValid() {
+    return this.userID && this.description && this.duration
   }
 
-  click(event) {
-    if (this.state.userID && this.state.description && this.state.duration) {
-      return this.onSubmit('add');
-    }
+  onSubmit(endpoint) {
+
     this.setState(
       {
         submitted: true,
       }
-    )
-      
-    console.log(this.state.submitted)
+    , () => {
+      if (this.formIsValid()) {
+        makeRequest(endpoint, this.state).then( data => {
+          console.log(data);
+        })
+      }
+    })
   }
 
+  // click(event) {
+    
+  // }
+
   render() {
-    const styles =
-    {
-      border: '1px solid red',
-    }
+    
+    const inputs = [
+      {name: 'userID', isRequired: true, placeholder: 'userID*'},
+      {name: 'description', isRequired: true, placeholder: 'description*'},
+      {name: 'duration', isRequired: true, placeholder: 'duration* (mins.)'},
+      {name: 'date', isRequired: false, placeholder: 'date (yyyy-mm-dd)'},
+    ]
+
+    const inputFields = inputs.map( input => {
+      return (
+        <Input key={input.name} name={input.name} placeholder={input.placeholder} submitted={this.state.submitted}
+        isRequired={input.isRequired} change={this.onChange} value={this.state[input.name]}/>
+      )
+    })
 
     return (
       <div>
         Add Exercises
         <br/>
         <code>POST /api/exercise/add</code>
-        <input style={(this.state.submitted && !this.state.userID) ? styles : {}} placeholder='userID*'
-        type='text' value={this.state.userID} onChange={(e) => this.onChange(e, 'userID')} />
-        <input style={(this.state.submitted && !this.state.description) ? styles : {}} placeholder='description*'
-        type='text' value={this.state.description} onChange={(e) => this.onChange(e, 'description')} />
-        <input style={(this.state.submitted && !this.state.duration) ? styles : {}} placeholder='duration* (mins.)'
-        type='text' value={this.state.duration} onChange={(e) => this.onChange(e, 'duration')} />
-        <input type='text' value={this.state.date} placeholder='date (yyyy-mm-dd)'
-        onChange={(e) => this.onChange(e, 'date')} /> 
-        {this.state.submitted && <span className='errorMessage'>Fields marked as * are required</span>}
-        <div className='button' onClick={this.click} >Submit</div>
+        {inputFields}
+        <div className='button' onClick={this.onSubmit.bind(this, 'add')} >Submit</div>
       </div>
     )
   }

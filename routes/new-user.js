@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const bodyParser = require('body-parser');
-const urlencodedParser = bodyParser.urlencoded({ extended: false })
+const jsonParser = bodyParser.json();
 const database = require('../datatabase.js');
 const db = database.getDb();
 
@@ -26,10 +26,10 @@ function handleURL(req, res) {
               return
             }
             console.log(result.ops[0]);
+            response.user = username;
+            response.userID = userID;
+            res.send(response)                
           })
-          response.user = username;
-          response.userID = userID;
-          res.send(response)                
         } else {
           // url is already in the db
           res.json( {error: 'username already taken'} )
@@ -39,6 +39,6 @@ function handleURL(req, res) {
   })
 }
 
-router.post('/api/exercise/new-user', urlencodedParser, handleURL);
+router.post('/api/exercise/new-user', jsonParser, handleURL);
 
 module.exports = router;
