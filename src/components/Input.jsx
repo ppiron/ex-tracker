@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Input = ({name, isRequired, placeholder, change, value, submitted}) => {
+const Input = ({name, isRequired = false, placeholder, change, value, submitted = false}) => {
 
   const isValid = submitted ? (isRequired ? value !== '' : true) : true
 

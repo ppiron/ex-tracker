@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 13);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -264,9 +264,9 @@ process.umask = function () {
 /* WEBPACK VAR INJECTION */(function(process) {
 
 if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(13);
-} else {
   module.exports = __webpack_require__(14);
+} else {
+  module.exports = __webpack_require__(15);
 }
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
@@ -580,7 +580,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 var printWarning = function printWarning() {};
 
 if (process.env.NODE_ENV !== 'production') {
-  var ReactPropTypesSecret = __webpack_require__(15);
+  var ReactPropTypesSecret = __webpack_require__(16);
   var loggedTypeFailures = {};
 
   printWarning = function printWarning(text) {
@@ -819,7 +819,7 @@ module.exports = shallowEqual;
  * 
  */
 
-var isTextNode = __webpack_require__(18);
+var isTextNode = __webpack_require__(19);
 
 /*eslint-disable no-bitwise */
 
@@ -853,7 +853,51 @@ module.exports = containsNode;
 "use strict";
 
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Input = function Input(_ref) {
+  var name = _ref.name,
+      _ref$isRequired = _ref.isRequired,
+      isRequired = _ref$isRequired === undefined ? false : _ref$isRequired,
+      placeholder = _ref.placeholder,
+      change = _ref.change,
+      value = _ref.value,
+      _ref$submitted = _ref.submitted,
+      submitted = _ref$submitted === undefined ? false : _ref$submitted;
+
+
+  var isValid = submitted ? isRequired ? value !== '' : true : true;
+
+  var styles = {
+    border: '1px solid red'
+  };
+
+  return _react2.default.createElement(
+    'div',
+    null,
+    _react2.default.createElement('input', { style: !isValid ? styles : {}, type: 'text', name: name, placeholder: placeholder,
+      onChange: function onChange(e) {
+        return change(e, name);
+      }, value: value })
+  );
+};
+
+exports.default = Input;
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -861,19 +905,17 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(16);
+var _reactDom = __webpack_require__(17);
 
-var _AddUser = __webpack_require__(25);
+var _AddUser = __webpack_require__(26);
 
 var _AddUser2 = _interopRequireDefault(_AddUser);
 
-var _FormExercise = __webpack_require__(26);
+var _FormExercise = __webpack_require__(27);
 
 var _FormExercise2 = _interopRequireDefault(_FormExercise);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -886,7 +928,7 @@ function makeRequest(endpoint, payload) {
   var body = void 0;
   if (endpoint === 'new-user') {
     body = {
-      'username': payload.newUser
+      'username': payload.username
     };
   } else {
     body = {
@@ -920,55 +962,48 @@ var App = function (_Component) {
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
 
     _this.state = {
-      text: {
-        newUser: '',
-        userID: '',
-        description: '',
-        duration: '',
-        date: ''
-      }
+      path: '/'
     };
 
-    _this.onChange = _this.onChange.bind(_this);
-    _this.onKeyPress = _this.onKeyPress.bind(_this);
-    _this.onSubmit = _this.onSubmit.bind(_this);
+    // this.onChange = this.onChange.bind(this);
+    // this.onKeyPress = this.onKeyPress.bind(this);
+    // this.onSubmit = this.onSubmit.bind(this);
     return _this;
   }
 
-  _createClass(App, [{
-    key: 'onChange',
-    value: function onChange(event, prop) {
-      this.setState({
-        text: _extends({}, this.state.text, _defineProperty({}, prop, event.target.value))
-      });
-    }
-  }, {
-    key: 'onKeyPress',
-    value: function onKeyPress(event) {
-      console.log(event.key);
-      if (event.key === 'Enter') {
-        this.onSubmit();
-      }
-    }
-  }, {
-    key: 'onSubmit',
-    value: function onSubmit(event, endpoint) {
-      var _this2 = this;
+  // onChange(event, prop) {
+  //   this.setState( 
+  //       {
+  //         text: {... this.state.text, [prop]: event.target.value}
+  //       }
+  //     )
+  // }
 
-      makeRequest(endpoint, this.state.text).then(function (data) {
-        // console.log(data);
-        _this2.setState({
-          data: data
-        });
-      });
-    }
-  }, {
+  // onKeyPress(event) {
+  //   console.log(event.key)
+  //   if (event.key === 'Enter') {
+  //     this.onSubmit();
+  //   }
+  // }
+
+  // onSubmit(event, endpoint) {
+  //   makeRequest(endpoint, this.state.text).then( data => {
+  //     // console.log(data);
+  //       this.setState( 
+  //         {
+  //           data: data,
+  //         }
+  //       )
+  //   })
+  // }
+
+  _createClass(App, [{
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
         'div',
         { id: 'container' },
-        _react2.default.createElement(_AddUser2.default, { onChange: this.onChange, text: this.state.text.newUser, onSubmit: this.onSubmit }),
+        _react2.default.createElement(_AddUser2.default, null),
         _react2.default.createElement(_FormExercise2.default, null)
       );
     }
@@ -980,7 +1015,7 @@ var App = function (_Component) {
 (0, _reactDom.render)(_react2.default.createElement(App, null), document.getElementById('root'));
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1116,7 +1151,7 @@ var X = { Children: { map: function map(a, b, e) {
     Z = Y && X || Y;module.exports = Z.default ? Z.default : Z;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2605,7 +2640,7 @@ if (process.env.NODE_ENV !== "production") {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2623,7 +2658,7 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 module.exports = ReactPropTypesSecret;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2658,14 +2693,14 @@ if (process.env.NODE_ENV === 'production') {
   // DCE check should happen before ReactDOM bundle executes so that
   // DevTools can report bad minification during injection.
   checkDCE();
-  module.exports = __webpack_require__(17);
+  module.exports = __webpack_require__(18);
 } else {
-  module.exports = __webpack_require__(20);
+  module.exports = __webpack_require__(21);
 }
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4757,7 +4792,7 @@ var Ai = { default: vi },
     Bi = Ai && vi || Ai;module.exports = Bi.default ? Bi.default : Bi;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4772,7 +4807,7 @@ var Ai = { default: vi },
  * @typechecks
  */
 
-var isNode = __webpack_require__(19);
+var isNode = __webpack_require__(20);
 
 /**
  * @param {*} object The object to check.
@@ -4785,7 +4820,7 @@ function isTextNode(object) {
 module.exports = isTextNode;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4816,7 +4851,7 @@ function isNode(object) {
 module.exports = isNode;
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4827,7 +4862,7 @@ module.exports = isNode;
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
- */var _typeof=typeof Symbol==="function"&&typeof Symbol.iterator==="symbol"?function(obj){return typeof obj;}:function(obj){return obj&&typeof Symbol==="function"&&obj.constructor===Symbol&&obj!==Symbol.prototype?"symbol":typeof obj;};if(process.env.NODE_ENV!=="production"){(function(){'use strict';var invariant=__webpack_require__(4);var React=__webpack_require__(1);var warning=__webpack_require__(6);var ExecutionEnvironment=__webpack_require__(8);var _assign=__webpack_require__(3);var emptyFunction=__webpack_require__(2);var checkPropTypes=__webpack_require__(7);var getActiveElement=__webpack_require__(9);var shallowEqual=__webpack_require__(10);var containsNode=__webpack_require__(11);var emptyObject=__webpack_require__(5);var hyphenateStyleName=__webpack_require__(21);var camelizeStyleName=__webpack_require__(23);// Relying on the `invariant()` implementation lets us
+ */var _typeof=typeof Symbol==="function"&&typeof Symbol.iterator==="symbol"?function(obj){return typeof obj;}:function(obj){return obj&&typeof Symbol==="function"&&obj.constructor===Symbol&&obj!==Symbol.prototype?"symbol":typeof obj;};if(process.env.NODE_ENV!=="production"){(function(){'use strict';var invariant=__webpack_require__(4);var React=__webpack_require__(1);var warning=__webpack_require__(6);var ExecutionEnvironment=__webpack_require__(8);var _assign=__webpack_require__(3);var emptyFunction=__webpack_require__(2);var checkPropTypes=__webpack_require__(7);var getActiveElement=__webpack_require__(9);var shallowEqual=__webpack_require__(10);var containsNode=__webpack_require__(11);var emptyObject=__webpack_require__(5);var hyphenateStyleName=__webpack_require__(22);var camelizeStyleName=__webpack_require__(24);// Relying on the `invariant()` implementation lets us
 // have preserve the format and params in the www builds.
 !React?invariant(false,'ReactDOM was loaded before React. Make sure you load the React package before loading ReactDOM.'):void 0;var invokeGuardedCallback=function invokeGuardedCallback(name,func,context,a,b,c,d,e,f){this._hasCaughtError=false;this._caughtError=null;var funcArgs=Array.prototype.slice.call(arguments,3);try{func.apply(context,funcArgs);}catch(error){this._caughtError=error;this._hasCaughtError=true;}};{// In DEV mode, we swap out invokeGuardedCallback for a special version
 // that plays more nicely with the browser's DevTools. The idea is to preserve
@@ -7982,7 +8017,7 @@ var reactDom=ReactDOM$3.default?ReactDOM$3.default:ReactDOM$3;module.exports=rea
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7997,7 +8032,7 @@ var reactDom=ReactDOM$3.default?ReactDOM$3.default:ReactDOM$3;module.exports=rea
 
 
 
-var hyphenate = __webpack_require__(22);
+var hyphenate = __webpack_require__(23);
 
 var msPattern = /^ms-/;
 
@@ -8024,7 +8059,7 @@ function hyphenateStyleName(string) {
 module.exports = hyphenateStyleName;
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8060,7 +8095,7 @@ function hyphenate(string) {
 module.exports = hyphenate;
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8075,7 +8110,7 @@ module.exports = hyphenate;
 
 
 
-var camelize = __webpack_require__(24);
+var camelize = __webpack_require__(25);
 
 var msPattern = /^-ms-/;
 
@@ -8103,7 +8138,7 @@ function camelizeStyleName(string) {
 module.exports = camelizeStyleName;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8138,7 +8173,7 @@ function camelize(string) {
 module.exports = camelize;
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8147,46 +8182,95 @@ module.exports = camelize;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.AddUser = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _Input = __webpack_require__(12);
+
+var _Input2 = _interopRequireDefault(_Input);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var AddUser = function AddUser(props) {
-  var _onChange = props.onChange,
-      onSubmit = props.onSubmit,
-      text = props.text;
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-  return _react2.default.createElement(
-    'div',
-    null,
-    'Create a New User',
-    _react2.default.createElement('br', null),
-    _react2.default.createElement(
-      'code',
-      null,
-      'POST /api/exercise/new-user'
-    ),
-    _react2.default.createElement('input', { type: 'text', placeholder: 'username', value: text, onChange: function onChange(e) {
-        return _onChange(e, 'newUser');
-      } }),
-    _react2.default.createElement(
-      'div',
-      { className: 'button', onClick: function onClick(e) {
-          return onSubmit(e, 'new-user');
-        } },
-      'Submit'
-    )
-  );
-};
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AddUser = exports.AddUser = function (_Component) {
+  _inherits(AddUser, _Component);
+
+  function AddUser(props) {
+    _classCallCheck(this, AddUser);
+
+    var _this = _possibleConstructorReturn(this, (AddUser.__proto__ || Object.getPrototypeOf(AddUser)).call(this, props));
+
+    _this.state = {
+      username: '',
+      submitted: false
+    };
+
+    _this.onChange = _this.onChange.bind(_this);
+    _this.onSubmit = _this.onSubmit.bind(_this);
+    return _this;
+  }
+
+  _createClass(AddUser, [{
+    key: 'onChange',
+    value: function onChange(event, name) {
+      this.setState(_defineProperty({}, name, event.target.value));
+    }
+  }, {
+    key: 'onSubmit',
+    value: function onSubmit(endpoint) {
+      var _this2 = this;
+
+      this.setState({
+        submitted: true
+      }, function () {
+        makeRequest(endpoint, _this2.state).then(function (data) {
+          console.log(data);
+        });
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+
+      return _react2.default.createElement(
+        'div',
+        null,
+        'Create a New User',
+        _react2.default.createElement('br', null),
+        _react2.default.createElement(
+          'code',
+          null,
+          'POST /api/exercise/new-user'
+        ),
+        _react2.default.createElement(_Input2.default, { name: 'username', placeholder: 'username', value: this.state.username, change: this.onChange }),
+        _react2.default.createElement(
+          'div',
+          { className: 'button', onClick: this.onSubmit.bind(this, 'new-user') },
+          'Submit'
+        )
+      );
+    }
+  }]);
+
+  return AddUser;
+}(_react.Component);
 
 exports.default = AddUser;
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8203,7 +8287,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Input = __webpack_require__(27);
+var _Input = __webpack_require__(12);
 
 var _Input2 = _interopRequireDefault(_Input);
 
@@ -8335,50 +8419,6 @@ var FormExercise = exports.FormExercise = function (_Component) {
 }(_react.Component);
 
 exports.default = FormExercise;
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(1);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Input = function Input(_ref) {
-  var name = _ref.name,
-      isRequired = _ref.isRequired,
-      placeholder = _ref.placeholder,
-      change = _ref.change,
-      value = _ref.value,
-      submitted = _ref.submitted;
-
-
-  var isValid = submitted ? isRequired ? value !== '' : true : true;
-
-  var styles = {
-    border: '1px solid red'
-  };
-
-  return _react2.default.createElement(
-    'div',
-    null,
-    _react2.default.createElement('input', { style: !isValid ? styles : {}, type: 'text', name: name, placeholder: placeholder,
-      onChange: function onChange(e) {
-        return change(e, name);
-      }, value: value })
-  );
-};
-
-exports.default = Input;
 
 /***/ })
 /******/ ]);

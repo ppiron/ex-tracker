@@ -8,7 +8,7 @@ function makeRequest(endpoint, payload) {
   let body;
   if (endpoint === 'new-user') {
     body = {
-      'username': payload.newUser, 
+      'username': payload.username, 
     }
   } else {
     body = {
@@ -37,50 +37,44 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      text: {
-        newUser: '',
-        userID: '',
-        description: '',
-        duration: '',
-        date: '',
-      },
+      path: '/',
     };
 
-    this.onChange = this.onChange.bind(this);
-    this.onKeyPress = this.onKeyPress.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+    // this.onChange = this.onChange.bind(this);
+    // this.onKeyPress = this.onKeyPress.bind(this);
+    // this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onChange(event, prop) {
-    this.setState( 
-        {
-          text: {... this.state.text, [prop]: event.target.value}
-        }
-      )
-  }
+  // onChange(event, prop) {
+  //   this.setState( 
+  //       {
+  //         text: {... this.state.text, [prop]: event.target.value}
+  //       }
+  //     )
+  // }
 
-  onKeyPress(event) {
-    console.log(event.key)
-    if (event.key === 'Enter') {
-      this.onSubmit();
-    }
-  }
+  // onKeyPress(event) {
+  //   console.log(event.key)
+  //   if (event.key === 'Enter') {
+  //     this.onSubmit();
+  //   }
+  // }
 
-  onSubmit(event, endpoint) {
-    makeRequest(endpoint, this.state.text).then( data => {
-      // console.log(data);
-        this.setState( 
-          {
-            data: data,
-          }
-        )
-    })
-  }
+  // onSubmit(event, endpoint) {
+  //   makeRequest(endpoint, this.state.text).then( data => {
+  //     // console.log(data);
+  //       this.setState( 
+  //         {
+  //           data: data,
+  //         }
+  //       )
+  //   })
+  // }
 
   render() {
     return (  
       <div id='container'>
-        <AddUser onChange={this.onChange} text={this.state.text.newUser} onSubmit={this.onSubmit} />
+        <AddUser />
         <FormExercise />
       </div>
     )
