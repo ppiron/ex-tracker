@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import Input from './Input.jsx'
+import makeRequest from '../makeRequest.js'
 
-export class AddUser extends Component {
+export class AddUserForm extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-        username: '',
+        username: this.props.data.user,
         submitted: false,
     };
 
@@ -31,6 +32,7 @@ export class AddUser extends Component {
       , () => {
         makeRequest(endpoint, this.state).then( data => {
           console.log(data);
+          this.props.navigate(endpoint, data);
         })
     })
   }
@@ -50,4 +52,4 @@ export class AddUser extends Component {
 
 }
 
-export default AddUser
+export default AddUserForm

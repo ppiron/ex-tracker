@@ -1,83 +1,71 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import AddUser from './components/AddUser.jsx'
-import FormExercise from './components/FormExercise.jsx'
+import AddUserForm from './components/AddUserForm.jsx'
+import AddExerciseForm from './components/AddExerciseForm.jsx'
 
-function makeRequest(endpoint, payload) {
-  
-  let body;
-  if (endpoint === 'new-user') {
-    body = {
-      'username': payload.username, 
-    }
-  } else {
-    body = {
-      'userID': payload.userID,
-      'exercise': payload.exercise,
-      'duration': payload.duration,
-      'date': payload.date,
-    }
-  }
-
-  const request = new Request('http://localhost:3300/api/exercise/' + endpoint, {
-	    method: 'POST', 
-      headers: {
-        "Content-type": "application/json"
-      },
-      body: JSON.stringify(body),
-    })
-  return fetch(request)
-    .then( (response) => {
-      return response.json();
-    })
-    .catch( (response) => response)
-} 
+/////////////////////////////////
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      path: '/',
+      path: window.location.pathname,
+      data: {},
     };
 
-    // this.onChange = this.onChange.bind(this);
-    // this.onKeyPress = this.onKeyPress.bind(this);
-    // this.onSubmit = this.onSubmit.bind(this);
+    this.navigate = this.navigate.bind(this);
   }
 
-  // onChange(event, prop) {
-  //   this.setState( 
-  //       {
-  //         text: {... this.state.text, [prop]: event.target.value}
-  //       }
-  //     )
-  // }
+  componentDidMount() {
+    window.onpopstate = (event) => {
+      this.setState(
+        {
+          path: window.location.pathname,
+        }
+      )
+    }
+  }
 
-  // onKeyPress(event) {
-  //   console.log(event.key)
-  //   if (event.key === 'Enter') {
-  //     this.onSubmit();
-  //   }
-  // }
-
-  // onSubmit(event, endpoint) {
-  //   makeRequest(endpoint, this.state.text).then( data => {
-  //     // console.log(data);
-  //       this.setState( 
-  //         {
-  //           data: data,
-  //         }
-  //       )
-  //   })
-  // }
+  navigate(path, data) {
+    this.setState(
+      {
+        path: path,
+        data: data,
+      }
+    , history.pushState({page: path}, path, 'api/exercise/' + path))
+  }
 
   render() {
+
     return (  
       <div id='container'>
-        <AddUser />
-        <FormExercise />
+        {(this.state.path === '/') && <AddUserForm navigate={this.navigate} data={this.state.data}/>}
+        {(this.state.path === '/') && <AddExerciseForm navigate={this.navigate} data={this.state.data}/>}
+        {(this.state.path !== '/') && <code>{JSON.stringify(this.state.data)}</code>}
       </div>
     )
+
+    // switch (this.state.path) {
+      
+    //   case '/':
+
+    //   return (  
+    //     <div id='container'>
+    //       <AddUserForm navigate={this.navigate} />
+    //       <AddExerciseForm />
+    //     </div>
+    //   )
+    //   break;
+      
+    //   default:
+      
+    //   return (  
+    //     <div id='container'>
+    //       <code>{JSON.stringify(this.state.data)}</code>
+    //     </div>
+    //   )
+    // }
+
   }
 }
 

@@ -32,7 +32,11 @@ function handleURL(req, res) {
           })
         } else {
           // url is already in the db
-          res.json( {error: 'username already taken'} )
+          res.json( 
+            {
+              user: username,
+              error: 'username already taken'
+            })
         }
       });
     }

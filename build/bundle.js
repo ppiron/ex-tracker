@@ -907,13 +907,13 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactDom = __webpack_require__(17);
 
-var _AddUser = __webpack_require__(26);
+var _AddUserForm = __webpack_require__(26);
 
-var _AddUser2 = _interopRequireDefault(_AddUser);
+var _AddUserForm2 = _interopRequireDefault(_AddUserForm);
 
-var _FormExercise = __webpack_require__(27);
+var _AddExerciseForm = __webpack_require__(27);
 
-var _FormExercise2 = _interopRequireDefault(_FormExercise);
+var _AddExerciseForm2 = _interopRequireDefault(_AddExerciseForm);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -923,35 +923,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-function makeRequest(endpoint, payload) {
-
-  var body = void 0;
-  if (endpoint === 'new-user') {
-    body = {
-      'username': payload.username
-    };
-  } else {
-    body = {
-      'userID': payload.userID,
-      'exercise': payload.exercise,
-      'duration': payload.duration,
-      'date': payload.date
-    };
-  }
-
-  var request = new Request('http://localhost:3300/api/exercise/' + endpoint, {
-    method: 'POST',
-    headers: {
-      "Content-type": "application/json"
-    },
-    body: JSON.stringify(body)
-  });
-  return fetch(request).then(function (response) {
-    return response.json();
-  }).catch(function (response) {
-    return response;
-  });
-}
+/////////////////////////////////
 
 var App = function (_Component) {
   _inherits(App, _Component);
@@ -962,50 +934,69 @@ var App = function (_Component) {
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
 
     _this.state = {
-      path: '/'
+      path: window.location.pathname,
+      data: {}
     };
 
-    // this.onChange = this.onChange.bind(this);
-    // this.onKeyPress = this.onKeyPress.bind(this);
-    // this.onSubmit = this.onSubmit.bind(this);
+    _this.navigate = _this.navigate.bind(_this);
     return _this;
   }
 
-  // onChange(event, prop) {
-  //   this.setState( 
-  //       {
-  //         text: {... this.state.text, [prop]: event.target.value}
-  //       }
-  //     )
-  // }
-
-  // onKeyPress(event) {
-  //   console.log(event.key)
-  //   if (event.key === 'Enter') {
-  //     this.onSubmit();
-  //   }
-  // }
-
-  // onSubmit(event, endpoint) {
-  //   makeRequest(endpoint, this.state.text).then( data => {
-  //     // console.log(data);
-  //       this.setState( 
-  //         {
-  //           data: data,
-  //         }
-  //       )
-  //   })
-  // }
-
   _createClass(App, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      window.onpopstate = function (event) {
+        _this2.setState({
+          path: window.location.pathname
+        });
+      };
+    }
+  }, {
+    key: 'navigate',
+    value: function navigate(path, data) {
+      this.setState({
+        path: path,
+        data: data
+      }, history.pushState({ page: path }, path, 'api/exercise/' + path));
+    }
+  }, {
     key: 'render',
     value: function render() {
+
       return _react2.default.createElement(
         'div',
         { id: 'container' },
-        _react2.default.createElement(_AddUser2.default, null),
-        _react2.default.createElement(_FormExercise2.default, null)
+        this.state.path === '/' && _react2.default.createElement(_AddUserForm2.default, { navigate: this.navigate, data: this.state.data }),
+        this.state.path === '/' && _react2.default.createElement(_AddExerciseForm2.default, { navigate: this.navigate, data: this.state.data }),
+        this.state.path !== '/' && _react2.default.createElement(
+          'code',
+          null,
+          JSON.stringify(this.state.data)
+        )
       );
+
+      // switch (this.state.path) {
+
+      //   case '/':
+
+      //   return (  
+      //     <div id='container'>
+      //       <AddUserForm navigate={this.navigate} />
+      //       <AddExerciseForm />
+      //     </div>
+      //   )
+      //   break;
+
+      //   default:
+
+      //   return (  
+      //     <div id='container'>
+      //       <code>{JSON.stringify(this.state.data)}</code>
+      //     </div>
+      //   )
+      // }
     }
   }]);
 
@@ -8182,7 +8173,7 @@ module.exports = camelize;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.AddUser = undefined;
+exports.AddUserForm = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -8194,6 +8185,10 @@ var _Input = __webpack_require__(12);
 
 var _Input2 = _interopRequireDefault(_Input);
 
+var _makeRequest = __webpack_require__(28);
+
+var _makeRequest2 = _interopRequireDefault(_makeRequest);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -8204,16 +8199,16 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var AddUser = exports.AddUser = function (_Component) {
-  _inherits(AddUser, _Component);
+var AddUserForm = exports.AddUserForm = function (_Component) {
+  _inherits(AddUserForm, _Component);
 
-  function AddUser(props) {
-    _classCallCheck(this, AddUser);
+  function AddUserForm(props) {
+    _classCallCheck(this, AddUserForm);
 
-    var _this = _possibleConstructorReturn(this, (AddUser.__proto__ || Object.getPrototypeOf(AddUser)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (AddUserForm.__proto__ || Object.getPrototypeOf(AddUserForm)).call(this, props));
 
     _this.state = {
-      username: '',
+      username: _this.props.data.user,
       submitted: false
     };
 
@@ -8222,7 +8217,7 @@ var AddUser = exports.AddUser = function (_Component) {
     return _this;
   }
 
-  _createClass(AddUser, [{
+  _createClass(AddUserForm, [{
     key: 'onChange',
     value: function onChange(event, name) {
       this.setState(_defineProperty({}, name, event.target.value));
@@ -8235,8 +8230,9 @@ var AddUser = exports.AddUser = function (_Component) {
       this.setState({
         submitted: true
       }, function () {
-        makeRequest(endpoint, _this2.state).then(function (data) {
+        (0, _makeRequest2.default)(endpoint, _this2.state).then(function (data) {
           console.log(data);
+          _this2.props.navigate(endpoint, data);
         });
       });
     }
@@ -8264,10 +8260,10 @@ var AddUser = exports.AddUser = function (_Component) {
     }
   }]);
 
-  return AddUser;
+  return AddUserForm;
 }(_react.Component);
 
-exports.default = AddUser;
+exports.default = AddUserForm;
 
 /***/ }),
 /* 27 */
@@ -8279,7 +8275,7 @@ exports.default = AddUser;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.FormExercise = undefined;
+exports.AddExerciseForm = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -8291,6 +8287,10 @@ var _Input = __webpack_require__(12);
 
 var _Input2 = _interopRequireDefault(_Input);
 
+var _makeRequest = __webpack_require__(28);
+
+var _makeRequest2 = _interopRequireDefault(_makeRequest);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -8301,49 +8301,19 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-function makeRequest(endpoint, payload) {
+var AddExerciseForm = exports.AddExerciseForm = function (_Component) {
+  _inherits(AddExerciseForm, _Component);
 
-  var body = void 0;
-  if (endpoint === 'new-user') {
-    body = {
-      'username': payload.newUser
-    };
-  } else {
-    body = {
-      'userID': payload.userID,
-      'exercise': payload.exercise,
-      'duration': payload.duration,
-      'date': payload.date
-    };
-  }
+  function AddExerciseForm(props) {
+    _classCallCheck(this, AddExerciseForm);
 
-  var request = new Request('http://localhost:3000/api/' + endpoint, {
-    method: 'POST',
-    headers: {
-      "Content-type": "application/json"
-    },
-    body: JSON.stringify(body)
-  });
-  return fetch(request).then(function (response) {
-    return response.json();
-  }).catch(function (response) {
-    return response;
-  });
-}
-
-var FormExercise = exports.FormExercise = function (_Component) {
-  _inherits(FormExercise, _Component);
-
-  function FormExercise(props) {
-    _classCallCheck(this, FormExercise);
-
-    var _this = _possibleConstructorReturn(this, (FormExercise.__proto__ || Object.getPrototypeOf(FormExercise)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (AddExerciseForm.__proto__ || Object.getPrototypeOf(AddExerciseForm)).call(this, props));
 
     _this.state = {
-      userID: '',
-      description: '',
-      duration: '',
-      date: '',
+      userID: _this.props.data.userID,
+      description: _this.props.data.exercise,
+      duration: _this.props.data.duration,
+      date: _this.props.data.date,
       submitted: false
     };
 
@@ -8353,7 +8323,7 @@ var FormExercise = exports.FormExercise = function (_Component) {
     return _this;
   }
 
-  _createClass(FormExercise, [{
+  _createClass(AddExerciseForm, [{
     key: 'onChange',
     value: function onChange(event, name) {
       this.setState(_defineProperty({}, name, event.target.value));
@@ -8361,7 +8331,7 @@ var FormExercise = exports.FormExercise = function (_Component) {
   }, {
     key: 'formIsValid',
     value: function formIsValid() {
-      return this.userID && this.description && this.duration;
+      return this.state.userID && this.state.description && this.state.duration;
     }
   }, {
     key: 'onSubmit',
@@ -8371,18 +8341,15 @@ var FormExercise = exports.FormExercise = function (_Component) {
       this.setState({
         submitted: true
       }, function () {
+        console.log(_this2.formIsValid());
         if (_this2.formIsValid()) {
-          makeRequest(endpoint, _this2.state).then(function (data) {
+          (0, _makeRequest2.default)(endpoint, _this2.state).then(function (data) {
             console.log(data);
+            _this2.props.navigate(endpoint, data);
           });
         }
       });
     }
-
-    // click(event) {
-
-    // }
-
   }, {
     key: 'render',
     value: function render() {
@@ -8392,7 +8359,7 @@ var FormExercise = exports.FormExercise = function (_Component) {
 
       var inputFields = inputs.map(function (input) {
         return _react2.default.createElement(_Input2.default, { key: input.name, name: input.name, placeholder: input.placeholder, submitted: _this3.state.submitted,
-          isRequired: input.isRequired, change: _this3.onChange, value: _this3.state[input.name] });
+          isRequired: input.isRequired, change: _this3.onChange, value: _this3.state[input.name] || '' });
       });
 
       return _react2.default.createElement(
@@ -8406,6 +8373,11 @@ var FormExercise = exports.FormExercise = function (_Component) {
           'POST /api/exercise/add'
         ),
         inputFields,
+        this.state.submitted && !this.formIsValid() && _react2.default.createElement(
+          'span',
+          { className: '.errorMessage' },
+          'Fields marked as * are required'
+        ),
         _react2.default.createElement(
           'div',
           { className: 'button', onClick: this.onSubmit.bind(this, 'add') },
@@ -8415,10 +8387,51 @@ var FormExercise = exports.FormExercise = function (_Component) {
     }
   }]);
 
-  return FormExercise;
+  return AddExerciseForm;
 }(_react.Component);
 
-exports.default = FormExercise;
+exports.default = AddExerciseForm;
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = makeRequest;
+function makeRequest(endpoint, payload) {
+
+  var body = void 0;
+  if (endpoint === 'new-user') {
+    body = {
+      'username': payload.username
+    };
+  } else {
+    body = {
+      'userID': payload.userID,
+      'exercise': payload.description,
+      'duration': payload.duration,
+      'date': payload.date
+    };
+  }
+
+  var request = new Request('http://localhost:3300/api/exercise/' + endpoint, {
+    method: 'POST',
+    headers: {
+      "Content-type": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
+  return fetch(request).then(function (response) {
+    return response.json();
+  }).catch(function (response) {
+    return response;
+  });
+}
 
 /***/ })
 /******/ ]);

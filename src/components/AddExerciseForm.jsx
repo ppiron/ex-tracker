@@ -1,44 +1,15 @@
 import React, { Component } from 'react'
 import Input from './Input.jsx'
+import makeRequest from '../makeRequest.js'
 
-function makeRequest(endpoint, payload) {
-  
-  let body;
-  if (endpoint === 'new-user') {
-    body = {
-      'username': payload.newUser, 
-    }
-  } else {
-    body = {
-      'userID': payload.userID,
-      'exercise': payload.exercise,
-      'duration': payload.duration,
-      'date': payload.date,
-    }
-  }
-
-  const request = new Request('http://localhost:3000/api/' + endpoint, {
-	    method: 'POST', 
-      headers: {
-        "Content-type": "application/json"
-      },
-      body: JSON.stringify(body),
-    })
-  return fetch(request)
-    .then( (response) => {
-      return response.json();
-    })
-    .catch( (response) => response)
-} 
-
-export class FormExercise extends Component {
+export class AddExerciseForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        userID: '',
-        description: '',
-        duration: '',
-        date: '',
+        userID: this.props.data.userID,
+        description: this.props.data.exercise,
+        duration: this.props.data.duration,
+        date: this.props.data.date,
         submitted: false,
     };
 
@@ -56,7 +27,7 @@ export class FormExercise extends Component {
   }
 
   formIsValid() {
-    return this.userID && this.description && this.duration
+    return this.state.userID && this.state.description && this.state.duration
   }
 
   onSubmit(endpoint) {
@@ -66,17 +37,15 @@ export class FormExercise extends Component {
         submitted: true,
       }
     , () => {
+      console.log(this.formIsValid())
       if (this.formIsValid()) {
         makeRequest(endpoint, this.state).then( data => {
           console.log(data);
+          this.props.navigate(endpoint, data);
         })
       }
     })
   }
-
-  // click(event) {
-    
-  // }
 
   render() {
     
@@ -90,7 +59,7 @@ export class FormExercise extends Component {
     const inputFields = inputs.map( input => {
       return (
         <Input key={input.name} name={input.name} placeholder={input.placeholder} submitted={this.state.submitted}
-        isRequired={input.isRequired} change={this.onChange} value={this.state[input.name]}/>
+        isRequired={input.isRequired} change={this.onChange} value={this.state[input.name] || ''}/>
       )
     })
 
@@ -100,10 +69,11 @@ export class FormExercise extends Component {
         <br/>
         <code>POST /api/exercise/add</code>
         {inputFields}
+        {(this.state.submitted && !this.formIsValid()) && <span className='.errorMessage'>Fields marked as * are required</ span>}
         <div className='button' onClick={this.onSubmit.bind(this, 'add')} >Submit</div>
       </div>
     )
   }
 }
 
-export default FormExercise
+export default AddExerciseForm

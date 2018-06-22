@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const bodyParser = require('body-parser');
-const urlencodedParser = bodyParser.urlencoded({ extended: false })
+const jsonParser = bodyParser.json();
 const database = require('../datatabase.js');
 const db = database.getDb();
 
@@ -55,6 +55,6 @@ function handleURL(req, res) {
 }
 
 
-router.post('/api/exercise/add', urlencodedParser, handleURL);
+router.post('/api/exercise/add', jsonParser, handleURL);
 
 module.exports = router;
