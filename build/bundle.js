@@ -870,23 +870,17 @@ var Input = function Input(_ref) {
       placeholder = _ref.placeholder,
       change = _ref.change,
       value = _ref.value,
-      _ref$submitted = _ref.submitted,
-      submitted = _ref$submitted === undefined ? false : _ref$submitted;
+      _ref$invalid = _ref.invalid,
+      invalid = _ref$invalid === undefined ? false : _ref$invalid;
 
-
-  var isValid = submitted ? isRequired ? value !== '' : true : true;
-
-  var styles = {
-    border: '1px solid red'
-  };
 
   return _react2.default.createElement(
     'div',
     null,
-    _react2.default.createElement('input', { style: !isValid ? styles : {}, type: 'text', name: name, placeholder: placeholder,
+    _react2.default.createElement('input', { className: isRequired && invalid && value === '' ? 'invalid' : '', type: 'text', name: name, placeholder: placeholder,
       onChange: function onChange(e) {
         return change(e, name);
-      }, value: value })
+      }, value: value, required: isRequired })
   );
 };
 
@@ -911,7 +905,7 @@ var _AddUserForm = __webpack_require__(26);
 
 var _AddUserForm2 = _interopRequireDefault(_AddUserForm);
 
-var _AddExerciseForm = __webpack_require__(27);
+var _AddExerciseForm = __webpack_require__(28);
 
 var _AddExerciseForm2 = _interopRequireDefault(_AddExerciseForm);
 
@@ -931,72 +925,19 @@ var App = function (_Component) {
   function App() {
     _classCallCheck(this, App);
 
-    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
-
-    _this.state = {
-      path: window.location.pathname,
-      data: {}
-    };
-
-    _this.navigate = _this.navigate.bind(_this);
-    return _this;
+    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
   }
 
   _createClass(App, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      var _this2 = this;
-
-      window.onpopstate = function (event) {
-        _this2.setState({
-          path: window.location.pathname
-        });
-      };
-    }
-  }, {
-    key: 'navigate',
-    value: function navigate(path, data) {
-      this.setState({
-        path: path,
-        data: data
-      }, history.pushState({ page: path }, path, 'api/exercise/' + path));
-    }
-  }, {
     key: 'render',
     value: function render() {
 
       return _react2.default.createElement(
         'div',
         { id: 'container' },
-        this.state.path === '/' && _react2.default.createElement(_AddUserForm2.default, { navigate: this.navigate, data: this.state.data }),
-        this.state.path === '/' && _react2.default.createElement(_AddExerciseForm2.default, { navigate: this.navigate, data: this.state.data }),
-        this.state.path !== '/' && _react2.default.createElement(
-          'code',
-          null,
-          JSON.stringify(this.state.data)
-        )
+        _react2.default.createElement(_AddUserForm2.default, null),
+        _react2.default.createElement(_AddExerciseForm2.default, null)
       );
-
-      // switch (this.state.path) {
-
-      //   case '/':
-
-      //   return (  
-      //     <div id='container'>
-      //       <AddUserForm navigate={this.navigate} />
-      //       <AddExerciseForm />
-      //     </div>
-      //   )
-      //   break;
-
-      //   default:
-
-      //   return (  
-      //     <div id='container'>
-      //       <code>{JSON.stringify(this.state.data)}</code>
-      //     </div>
-      //   )
-      // }
     }
   }]);
 
@@ -8185,10 +8126,6 @@ var _Input = __webpack_require__(12);
 
 var _Input2 = _interopRequireDefault(_Input);
 
-var _makeRequest = __webpack_require__(28);
-
-var _makeRequest2 = _interopRequireDefault(_makeRequest);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -8208,12 +8145,10 @@ var AddUserForm = exports.AddUserForm = function (_Component) {
     var _this = _possibleConstructorReturn(this, (AddUserForm.__proto__ || Object.getPrototypeOf(AddUserForm)).call(this, props));
 
     _this.state = {
-      username: _this.props.data.user,
-      submitted: false
+      username: ''
     };
 
     _this.onChange = _this.onChange.bind(_this);
-    _this.onSubmit = _this.onSubmit.bind(_this);
     return _this;
   }
 
@@ -8223,18 +8158,10 @@ var AddUserForm = exports.AddUserForm = function (_Component) {
       this.setState(_defineProperty({}, name, event.target.value));
     }
   }, {
-    key: 'onSubmit',
-    value: function onSubmit(endpoint) {
-      var _this2 = this;
-
-      this.setState({
-        submitted: true
-      }, function () {
-        (0, _makeRequest2.default)(endpoint, _this2.state).then(function (data) {
-          console.log(data);
-          _this2.props.navigate(endpoint, data);
-        });
-      });
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      console.log('unmounting');
+      window.sessionStorage.setItem('username', this.state.username);
     }
   }, {
     key: 'render',
@@ -8250,11 +8177,15 @@ var AddUserForm = exports.AddUserForm = function (_Component) {
           null,
           'POST /api/exercise/new-user'
         ),
-        _react2.default.createElement(_Input2.default, { name: 'username', placeholder: 'username', value: this.state.username, change: this.onChange }),
         _react2.default.createElement(
-          'div',
-          { className: 'button', onClick: this.onSubmit.bind(this, 'new-user') },
-          'Submit'
+          'form',
+          { action: '/api/exercise/new-user', method: 'post' },
+          _react2.default.createElement(_Input2.default, { name: 'username', placeholder: 'username', value: this.state.username || '', change: this.onChange }),
+          _react2.default.createElement(
+            'button',
+            { type: 'submit', className: 'button' },
+            'Submit'
+          )
         )
       );
     }
@@ -8266,7 +8197,8 @@ var AddUserForm = exports.AddUserForm = function (_Component) {
 exports.default = AddUserForm;
 
 /***/ }),
-/* 27 */
+/* 27 */,
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8287,10 +8219,6 @@ var _Input = __webpack_require__(12);
 
 var _Input2 = _interopRequireDefault(_Input);
 
-var _makeRequest = __webpack_require__(28);
-
-var _makeRequest2 = _interopRequireDefault(_makeRequest);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -8310,15 +8238,16 @@ var AddExerciseForm = exports.AddExerciseForm = function (_Component) {
     var _this = _possibleConstructorReturn(this, (AddExerciseForm.__proto__ || Object.getPrototypeOf(AddExerciseForm)).call(this, props));
 
     _this.state = {
-      userID: _this.props.data.userID,
-      description: _this.props.data.exercise,
-      duration: _this.props.data.duration,
-      date: _this.props.data.date,
-      submitted: false
+      userID: '',
+      exercise: '',
+      duration: '',
+      date: '',
+      valid: false,
+      invalid: false
     };
 
     _this.onChange = _this.onChange.bind(_this);
-    _this.onSubmit = _this.onSubmit.bind(_this);
+    _this.onInvalid = _this.onInvalid.bind(_this);
     _this.formIsValid = _this.formIsValid.bind(_this);
     return _this;
   }
@@ -8326,40 +8255,33 @@ var AddExerciseForm = exports.AddExerciseForm = function (_Component) {
   _createClass(AddExerciseForm, [{
     key: 'onChange',
     value: function onChange(event, name) {
-      this.setState(_defineProperty({}, name, event.target.value));
+      this.setState(_defineProperty({}, name, event.target.value), this.formIsValid());
+    }
+  }, {
+    key: 'onInvalid',
+    value: function onInvalid(event) {
+      this.setState({
+        invalid: true
+      });
     }
   }, {
     key: 'formIsValid',
     value: function formIsValid() {
-      return this.state.userID && this.state.description && this.state.duration;
-    }
-  }, {
-    key: 'onSubmit',
-    value: function onSubmit(endpoint) {
-      var _this2 = this;
-
       this.setState({
-        submitted: true
-      }, function () {
-        console.log(_this2.formIsValid());
-        if (_this2.formIsValid()) {
-          (0, _makeRequest2.default)(endpoint, _this2.state).then(function (data) {
-            console.log(data);
-            _this2.props.navigate(endpoint, data);
-          });
-        }
+        valid: this.state.userID !== '' && this.state.exercise !== '' && this.state.duration !== ''
+
       });
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this3 = this;
+      var _this2 = this;
 
-      var inputs = [{ name: 'userID', isRequired: true, placeholder: 'userID*' }, { name: 'description', isRequired: true, placeholder: 'description*' }, { name: 'duration', isRequired: true, placeholder: 'duration* (mins.)' }, { name: 'date', isRequired: false, placeholder: 'date (yyyy-mm-dd)' }];
+      var inputs = [{ name: 'userID', isRequired: true, placeholder: 'userID*' }, { name: 'exercise', isRequired: true, placeholder: 'description*' }, { name: 'duration', isRequired: true, placeholder: 'duration* (mins.)' }, { name: 'date', isRequired: false, placeholder: 'date (yyyy-mm-dd)' }];
 
       var inputFields = inputs.map(function (input) {
-        return _react2.default.createElement(_Input2.default, { key: input.name, name: input.name, placeholder: input.placeholder, submitted: _this3.state.submitted,
-          isRequired: input.isRequired, change: _this3.onChange, value: _this3.state[input.name] || '' });
+        return _react2.default.createElement(_Input2.default, { key: input.name, name: input.name, placeholder: input.placeholder, invalid: _this2.state.invalid,
+          isRequired: input.isRequired, change: _this2.onChange, value: _this2.state[input.name] || '' });
       });
 
       return _react2.default.createElement(
@@ -8372,16 +8294,20 @@ var AddExerciseForm = exports.AddExerciseForm = function (_Component) {
           null,
           'POST /api/exercise/add'
         ),
-        inputFields,
-        this.state.submitted && !this.formIsValid() && _react2.default.createElement(
-          'span',
-          { className: '.errorMessage' },
-          'Fields marked as * are required'
-        ),
         _react2.default.createElement(
-          'div',
-          { className: 'button', onClick: this.onSubmit.bind(this, 'add') },
-          'Submit'
+          'form',
+          { action: '/api/exercise/add', method: 'post', onInvalid: this.onInvalid },
+          inputFields,
+          !this.state.valid && this.state.invalid && _react2.default.createElement(
+            'p',
+            { className: 'errorMessage' },
+            'Fields marked as * are required'
+          ),
+          _react2.default.createElement(
+            'button',
+            { type: 'submit', className: 'button' },
+            'Submit'
+          )
         )
       );
     }
@@ -8391,47 +8317,6 @@ var AddExerciseForm = exports.AddExerciseForm = function (_Component) {
 }(_react.Component);
 
 exports.default = AddExerciseForm;
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = makeRequest;
-function makeRequest(endpoint, payload) {
-
-  var body = void 0;
-  if (endpoint === 'new-user') {
-    body = {
-      'username': payload.username
-    };
-  } else {
-    body = {
-      'userID': payload.userID,
-      'exercise': payload.description,
-      'duration': payload.duration,
-      'date': payload.date
-    };
-  }
-
-  var request = new Request('http://localhost:3300/api/exercise/' + endpoint, {
-    method: 'POST',
-    headers: {
-      "Content-type": "application/json"
-    },
-    body: JSON.stringify(body)
-  });
-  return fetch(request).then(function (response) {
-    return response.json();
-  }).catch(function (response) {
-    return response;
-  });
-}
 
 /***/ })
 /******/ ]);

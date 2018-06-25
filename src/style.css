@@ -45,7 +45,7 @@ input {
 
 .errorMessage {
   color: red;
-  display: inline-block;
+  display: block;
   margin: 0 auto;
   margin-top: 30px;
 }
@@ -56,4 +56,8 @@ input {
 
 #shorturl {
   margin-top: 15px;
+}
+
+.invalid {
+  border: 1px solid red;
 }

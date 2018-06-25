@@ -1,17 +1,11 @@
 import React from 'react'
 
-const Input = ({name, isRequired = false, placeholder, change, value, submitted = false}) => {
-
-  const isValid = submitted ? (isRequired ? value !== '' : true) : true
-
-  const styles = {
-    border: '1px solid red'
-  }
+const Input = ({name, isRequired = false, placeholder, change, value, invalid = false}) => {
 
   return (
     <div>
-      <input style={!isValid ? styles : {}} type="text" name={name} placeholder={placeholder} 
-      onChange={(e) => change(e, name)} value={value} />
+      <input className={(isRequired && invalid && value === '') ? 'invalid' : ''} type="text" name={name} placeholder={placeholder} 
+      onChange={(e) => change(e, name)} value={value} required={isRequired}/>
     </div>
   )
 }

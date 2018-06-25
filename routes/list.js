@@ -23,7 +23,8 @@ function handleURL(req, res) {
           .then ( docs => {
             response.username = docs[0].user
             response.userID = userID
-            response.exercises = docs[0].exercises
+            response.count = docs[0].exercises.length
+            response.log = docs[0].exercises
             res.send(response)
           })
           // db.collection('users').updateOne(

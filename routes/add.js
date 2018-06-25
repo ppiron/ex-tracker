@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const bodyParser = require('body-parser');
-const jsonParser = bodyParser.json();
+const urlencodedParser = bodyParser.urlencoded({ extended: false })
 const database = require('../datatabase.js');
 const db = database.getDb();
 
@@ -11,6 +11,7 @@ function handleURL(req, res) {
   const userID = req.body.userID;
   const exercise = req.body.exercise;
   const duration = req.body.duration;
+  const date = req.body.date || new Date(Date.now()).toDateString()
   
   db.collection('users').find({ id: userID }, (error, result) => {
     if (error) {
@@ -29,8 +30,9 @@ function handleURL(req, res) {
             { $push: 
               { exercises: 
                 {
-                  exercise: exercise,
+                  description: exercise,
                   duration: duration,
+                  date: date,
                 }
               }
             }, (error, result) => {
@@ -41,8 +43,9 @@ function handleURL(req, res) {
             console.log(result.modifiedCount);
             response.user = username;
             response.userID = userID;
-            response.exercise = exercise;
+            response.description = exercise;
             response.duration = duration;
+            response.date = date;
             res.send(response)
           })
         } else {
@@ -55,6 +58,6 @@ function handleURL(req, res) {
 }
 
 
-router.post('/api/exercise/add', jsonParser, handleURL);
+router.post('/api/exercise/add', urlencodedParser, handleURL);
 
 module.exports = router;

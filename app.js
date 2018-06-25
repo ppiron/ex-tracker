@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const newRoute = require('./routes/new-user');
 const addRoute = require('./routes/add');
+const listRoute = require('./routes/list');
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -14,4 +15,5 @@ app.use('/build', express.static('./build'));
 
 app.use(newRoute);
 app.use(addRoute);
+app.use(listRoute);
 module.exports = app;
